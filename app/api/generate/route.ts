@@ -12,8 +12,8 @@ async function generateImage(prompt: string): Promise<string> {
     const imagePrompt = `A beautiful, professional social media post image for: ${prompt}. High quality, optimized for Instagram/Twitter, eye-catching, modern design.`;
     const encodedPrompt = encodeURIComponent(imagePrompt);
 
-    // Return the image URL - Pollinations will generate it on demand
-    const imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}?key=${apiKey}`;
+    // Return direct image URL with Flux model
+    const imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}?model=flux&key=${apiKey}`;
     return imageUrl;
   } catch (error) {
     console.error('Image generation error:', error);
