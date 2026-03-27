@@ -4,9 +4,16 @@ const POLLINATIONS_API = 'https://gen.pollinations.ai';
 
 async function generateImage(prompt: string): Promise<string> {
   try {
+    const apiKey = process.env.POLLINATIONS_API_KEY;
     const imagePrompt = `A beautiful, professional social media post image for: ${prompt}. High quality, optimized for Instagram/Twitter, eye-catching, modern design.`;
     const encodedPrompt = encodeURIComponent(imagePrompt);
-    const imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}`;
+
+    // Build image URL with API key if available
+    let imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}`;
+    if (apiKey) {
+      imageUrl += `?key=${apiKey}`;
+    }
+
     return imageUrl;
   } catch (error) {
     console.error('Image generation error:', error);
