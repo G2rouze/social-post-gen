@@ -12,9 +12,20 @@ async function generateImage(prompt: string): Promise<string> {
     const imagePrompt = `A beautiful, professional social media post image for: ${prompt}. High quality, optimized for Instagram/Twitter, eye-catching, modern design.`;
     const encodedPrompt = encodeURIComponent(imagePrompt);
 
-    // Return direct image URL with Flux model
-    const imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}?model=flux&key=${apiKey}`;
-    return imageUrl;
+    // Fetch image from Pollinations (SECURE: API key stays on backend)
+    const imageUrl = `https://gen.pollinations.ai/image/${encodedPrompt}?model=flux&key=${apiKey}`;
+
+    const response = await fetch(imageUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to generate image: ${response.status}`);
+    }
+
+    // Convert image to base64
+    const buffer = await response.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString('base64');
+
+    // Return as data URL (no API key exposed)
+    return `data:image/jpeg;base64,${base64}`;
   } catch (error) {
     console.error('Image generation error:', error);
     throw error;
