@@ -150,9 +150,6 @@ export default function Home() {
                         src={currentPost.imageUrl}
                         alt="Generated"
                         className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/placeholder.png';
-                        }}
                       />
                     </div>
 

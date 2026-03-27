@@ -13,7 +13,7 @@ async function generateImage(prompt: string): Promise<string> {
     const encodedPrompt = encodeURIComponent(imagePrompt);
 
     // Return the image URL - Pollinations will generate it on demand
-    const imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}?key=${apiKey}&model=flux`;
+    const imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}?key=${apiKey}`;
     return imageUrl;
   } catch (error) {
     console.error('Image generation error:', error);
