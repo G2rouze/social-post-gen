@@ -7,13 +7,6 @@ async function generateImage(prompt: string): Promise<string> {
     const imagePrompt = `A beautiful, professional social media post image for: ${prompt}. High quality, optimized for Instagram/Twitter, eye-catching, modern design.`;
     const encodedPrompt = encodeURIComponent(imagePrompt);
     const imageUrl = `${POLLINATIONS_API}/image/${encodedPrompt}`;
-
-    // Verify the image URL is valid by making a HEAD request
-    const response = await fetch(imageUrl, { method: 'HEAD' });
-    if (!response.ok) {
-      throw new Error('Image generation failed');
-    }
-
     return imageUrl;
   } catch (error) {
     console.error('Image generation error:', error);
@@ -23,10 +16,12 @@ async function generateImage(prompt: string): Promise<string> {
 
 async function generateCaption(topic: string): Promise<string> {
   try {
+    const apiKey = process.env.POLLINATIONS_API_KEY;
     const response = await fetch(`${POLLINATIONS_API}/v1/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(apiKey && { Authorization: `Bearer ${apiKey}` }),
       },
       body: JSON.stringify({
         model: 'meta-llama/Llama-2-7b-chat-hf',
@@ -62,10 +57,12 @@ Just write the caption, no quotes or extra text.`,
 
 async function generateHashtags(topic: string): Promise<string> {
   try {
+    const apiKey = process.env.POLLINATIONS_API_KEY;
     const response = await fetch(`${POLLINATIONS_API}/v1/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(apiKey && { Authorization: `Bearer ${apiKey}` }),
       },
       body: JSON.stringify({
         model: 'meta-llama/Llama-2-7b-chat-hf',
